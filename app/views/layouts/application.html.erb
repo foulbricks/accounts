@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Accounts</title>
+  <%= stylesheet_link_tag    "application" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+	<% unless controller.controller_name =~ /session|users/i %>
+		<p><%= link_to "Logout", logout_path %></p>
+	<% end %>
+
+<%= yield %>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+<div id="page">
+  <% if flash[:alert] %>
+    <p class="flash-error"><%= flash[:alert] %></p>
+  <% end %>
+  <% if flash[:notice] %>
+    <p class="flash-notice"><%= flash[:notice] %></p>
+  <% end %>
+</div>
+
+<p><%= link_to "Logout", logout_path %></p>
+
+<div>
+	<h2>Users</h2>
+</div>
+
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Username</td>
+		<th></th>
+		<th></th>
+	</tr>
+	<% for user in @users %>
+		<tr class="<%= cycle('even', 'odd') -%>">
+			<td><%= [user.first_name, user.last_name].join(" ") %></td>
+			<td><%= user.username %></td>
+			<td><%= link_to "Delete", user_path(user), confirm: "Are you sure?", method: :delete %>
+		</tr>
+	<% end %>
+</table>
