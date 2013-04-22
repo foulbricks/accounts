@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20130415040904) do
     t.string   "password"
     t.string   "salt"
     t.string   "pwcode"
+    t.string   "activation_code"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

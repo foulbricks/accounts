@@ -22,7 +22,9 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to login_path, notice: 'User was successfully created.' }
+        flash[:notice] = "A link has been sent to your email to activate your account"
+        @user.send_signup_notification!
+        format.html { redirect_to login_path }
       else
         format.html { render action: "new" }
       end
@@ -59,6 +61,21 @@ class UsersController < ApplicationController
       end
     else
       render :template => "users/forgot_password"
+    end
+  end
+  
+  def activate
+    @user = User.find_by_activation_code(params[:activation_code])
+    
+    if @user
+      @user.activate!
+      @user.record_on_mailing_list!
+      session[:user_id] = @user.id
+      flash[:notice] = "Your account has been verified. Welcome!"
+      redirect_to :controller => "admin", :action => "index"
+    else
+      flash[:alert] = "We couldn't find your account -- check your email?"
+      redirect_to login_path
     end
   end
   

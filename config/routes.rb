@@ -4,6 +4,7 @@ Accounts::Application.routes.draw do
   get 'logout' => 'sessions#destroy', as: 'logout'
   match 'users/forgot-password'           => 'users#forgot_password'
   match 'users/reset_password/:pw_code'   => 'users#reset_password', :via => :get
+  match 'users/activate/:activation_code'   => 'users#activate', :via => :get
   resources :sessions, :users
   
   root :to => "admin#index"

@@ -27,10 +27,31 @@ class User < ActiveRecord::Base
     end
   end
   
+  def activate!
+    self.activation_code = nil
+    save
+    UserMailer.new_user(self).deliver
+  end
+  
+  def active?
+    self.activation_code.nil?
+  end
+  
+  def send_signup_notification!
+    self.activation_code = make_token
+    save
+    UserMailer.welcome(self).deliver
+  end
+  
   def forgot_password!
     self.pwcode = make_token
     save(:validate => false)
     UserMailer.forgot_password(self).deliver
+  end
+  
+  def record_on_mailing_list!
+    gb = Gibbon.new("13cd4de9e70ba1077115ddd6b4335144-us4")
+    gb.list_subscribe({:id => "4f49159f47", :email_address => email, :merge_vars => {:FNAME => first_name, :LNAME => last_name}})
   end
   
   private  
